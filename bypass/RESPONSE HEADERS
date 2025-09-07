@@ -1,0 +1,46 @@
+Accept-Ranges: bytes
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: X-Custom-Header
+Access-Control-Max-Age: 86400
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Headers: X-PINGOTHER, Content-Type
+Age: 3600
+Allow: GET, POST, HEAD
+Alt-Svc: h3=":443"; ma=2592000
+Clear-Site-Data: "cache", "cookies", "storage"
+Content-Disposition: attachment; filename="file.txt"
+Content-Encoding: gzip
+Content-Language: en-US, id
+Content-Length: 348
+Content-Location: /index.html
+Content-Range: bytes 200-1000/67589
+Content-Security-Policy: default-src 'self'
+Content-Security-Policy-Report-Only: default-src 'self'; report-uri /csp-violation-report-endpoint/
+Content-Type: text/html; charset=utf-8
+Delta-Base: "abc123"
+ETag: "737060cd8c284d8af7ad3082f209582d"
+Expires: Thu, 01 Dec 1994 16:00:00 GMT
+IM: feed
+Last-Modified: Tue, 15 Nov 1994 12:45:26 GMT
+Link: </styles.css>; rel="preconnect"
+Location: https://example.com/new-page
+NEL: { "report_to": "name_of_reporting_group", "max_age": 2592000 }
+P3P: CP="This is not a P3P policy!"
+Proxy-Authenticate: Basic
+Public-Key-Pins: max-age=2592000; pin-sha256="E9CZ9INDbd+2eRQozYqqbQ2yXLVKB9+xcprMF+44U1g="
+Refresh: 5; url=https://example.com
+Report-To: { "group": "csp-endpoint", "max_age": 10886400, "endpoints": [{ "url": "https://example.com/csp-reports" }] }
+Retry-After: 120
+Server: nginx/1.18.0 (Ubuntu)
+Set-Cookie: sessionId=abc123; Expires=Wed, 09 Jun 2021 10:18:14 GMT; Secure; HttpOnly
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+Timing-Allow-Origin: *
+Tk: !
+Trailer: Expires
+Transfer-Encoding: chunked
+Vary: Accept-Encoding
+WWW-Authenticate: Basic
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
