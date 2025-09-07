@@ -1,0 +1,10 @@
+X-Requested-With: XMLHttpRequest
+X-CSRF-Token: YOUR_CSRF_TOKEN_HERE
+X-Forwarded-For: 203.0.113.195, 70.41.3.18
+X-Forwarded-Host: example.com
+X-Forwarded-Proto: https
+X-Powered-By: PHP/7.4.3
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 99
+X-RateLimit-Reset: 1623347891
+X-UA-Compatible: IE=edge
